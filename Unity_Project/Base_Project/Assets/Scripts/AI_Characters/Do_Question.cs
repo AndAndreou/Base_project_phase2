@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Do_Question : MonoBehaviour {
 
 	private GameManager gameManager;
-	private OldDBManager dbManager;
+	private DBManager dbManager;
 	private CameraController cameraController;
 	//private CharacterController characterController;
 	private MainChararacter_Controller characterController;
@@ -89,7 +89,7 @@ public class Do_Question : MonoBehaviour {
 		targetGameObject = GameObject.FindWithTag (GameRepository.GetPlayerTag ());
 		targetTransform = targetGameObject.transform;
 		gameManager = GameObject.FindWithTag (GameRepository.GetGameManagerTag()).GetComponent<GameManager>();
-		dbManager = GameObject.FindWithTag (GameRepository.GetDBManagerTag()).GetComponent<OldDBManager>();
+		dbManager = GameObject.FindWithTag (GameRepository.GetDBManagerTag()).GetComponent<DBManager>();
 		//characterController = targetGameObject.GetComponent<CharacterController>();
 		characterController = targetGameObject.GetComponent<MainChararacter_Controller>();
 		cameraController = GameObject.FindWithTag (GameRepository.GetMainCameraTag()).GetComponent<CameraController>();
@@ -104,10 +104,11 @@ public class Do_Question : MonoBehaviour {
 		if (sectionNo >= 0) {
 			q_a = dbManager.GetQandA (sectionNo);
 			userAnswers = new int[q_a.Count];
+
+			//get the serial number from db
+			sectionSerialNumber = dbManager.GetSectionSerialNumber (sectionNo);
 		}
 
-		//get the serial number from db
-		sectionSerialNumber = dbManager.GetSectionSerialNumber (sectionNo);
 
 		lastTimeqAndaGUIShow = false;
 		qAndaGUIShow = false;
@@ -235,6 +236,7 @@ public class Do_Question : MonoBehaviour {
 				UpdateDB();
 				successRate = GetSuccessRateForSection();
 
+
 				if(sectionSerialNumber != DBInfo.GetLastSectionSerialNumber()){
 					DBInfo.SetCurrentSection(sectionSerialNumber +1);
 					DBInfo.SetCurrentQuestion(dbManager.GetFirstQuestionIdFromNextSection(sectionSerialNumber));
@@ -276,6 +278,7 @@ public class Do_Question : MonoBehaviour {
 					msg = "wait";
 				}
 				else{
+					//Debug.Log ("Success Rate is : " + successRate);
 					msg = "Success Rate is : " + successRate;
 				}
 
@@ -476,6 +479,7 @@ public class Do_Question : MonoBehaviour {
 /*---------------------------------------------------------------------------------------------------------------*/
 
 	private float GetSuccessRateForSection(){
+
 		return (dbManager.GetSuccessRateForSection(DBInfo.GetGameRoundId(),sectionNo));
 
 	}
@@ -488,6 +492,7 @@ public class Do_Question : MonoBehaviour {
 			List<TwoInt> updateAnswerUser = new List<TwoInt>();
 			//for(int i=0; i < currentQuestion ; i++){
 			for(int i=0; i < noUpdateQuestionCount ; i++){
+				Debug.Log(">>>>>>>>>>>>>");
 				if (i> q_a.Count-1){
 					break;
 				}
@@ -498,7 +503,8 @@ public class Do_Question : MonoBehaviour {
 			noUpdateQuestionCount = 0 ;
 			haveChange = false;
 			
-			dbManager.AddUserAnswers(updateAnswerUser);
+			string returnMsg = dbManager.AddUserAnswers(updateAnswerUser);
+			Debug.Log ("returnMsg from AddUserAnswers: " + returnMsg);
 		}
 	}
 

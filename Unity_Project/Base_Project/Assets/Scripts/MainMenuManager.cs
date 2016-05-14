@@ -38,18 +38,79 @@ public class MainMenuManager : MonoBehaviour {
 
 	//public float volumeLevel = 10.0F; //prepi na gini ena geniko volume gia ola //for settings button
 
-	public Texture2D emptyProgressBar; // for loading
-	public Texture2D fullProgressBar; // for loading
+	//public Texture2D emptyProgressBar; // for loading
+	//public Texture2D fullProgressBar; // for loading
 
 	public AudioClip buttonClickAudio;
 
 	private AsyncOperation async = null;
+
+	// for loading
+	[Range(1,10)]
+	public int animationSpeed;
+	public bool showAllCircles;
+	public float sizeLoadind;
+
+	private int frame;
+	private int counter;
+	private const int FrameMax = 16;
+
+	private Texture2D[] texture;
+	//
+
 	
 	// Use this for initialization
 	void Start () {
 	
 		mainMenuState = MainMenuState.MainMenu;
 		title = "Main Menu";
+
+
+		// for loading
+		frame = 0;
+		counter = 0;
+
+		texture = new Texture2D[FrameMax];
+
+		if (showAllCircles) {
+			texture[0] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img1");
+			texture[1] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img2");
+			texture[2] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img3");
+			texture[3] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img4");
+			texture[4] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img5");
+			texture[5] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img6");
+			texture[6] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img7");
+			texture[7] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img8");
+			texture[8] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img9");
+			texture[9] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img10");
+			texture[10] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img11");
+			texture[11] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img12");
+			texture[12] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img13");
+			texture[13] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img14");
+			texture[14] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img15");
+			texture[15] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img16");
+		}
+		else {
+			texture[0] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img1b");
+			texture[1] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img2b");
+			texture[2] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img3b");
+			texture[3] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img4b");
+			texture[4] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img5b");
+			texture[5] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img6b");
+			texture[6] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img7b");
+			texture[7] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img8b");
+			texture[8] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img9b");
+			texture[9] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img10b");
+			texture[10] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img11b");
+			texture[11] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img12b");
+			texture[12] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img13b");
+			texture[13] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img14b");
+			texture[14] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img15b");
+			texture[15] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img16b");
+		}
+		//
+
+
 
 		Time.timeScale = 1;
 
@@ -58,6 +119,19 @@ public class MainMenuManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+		// for loading
+		if (mainMenuState == MainMenuState.LoadScene) {
+			counter++;
+			if (counter >= animationSpeed) {
+				counter = 0;
+				frame++;
+				if (frame == FrameMax) {
+					frame = 0;
+				}
+			}
+		}
+		//
+
 	}
 
 	void OnGUI ()
@@ -248,15 +322,22 @@ public class MainMenuManager : MonoBehaviour {
 			Vector2 sizeLoadingTuxture;
 			Vector2 positionLoadingTuxture;
 
-			sizeLoadingTuxture.x = Screen.width * sizeLoadingBar.x ;
-			sizeLoadingTuxture.y = Screen.height * sizeLoadingBar.y ;
+			//sizeLoadingTuxture.x = Screen.width * sizeLoadingBar.x ;
+			//sizeLoadingTuxture.y = Screen.height * sizeLoadingBar.y ;
+
+			//positionLoadingTuxture.x = (Screen.width / 2) - (sizeLoadingTuxture.x / 2);
+			//positionLoadingTuxture.y = (Screen.height / 2) - (sizeLoadingTuxture.y / 2);
+
+			sizeLoadingTuxture.x = Screen.width * sizeLoadind ;
+			sizeLoadingTuxture.y = Screen.height * sizeLoadind ;
 
 			positionLoadingTuxture.x = (Screen.width / 2) - (sizeLoadingTuxture.x / 2);
 			positionLoadingTuxture.y = (Screen.height / 2) - (sizeLoadingTuxture.y / 2);
-
 			if (async != null) {
-				GUI.DrawTexture(new Rect(positionLoadingTuxture.x, positionLoadingTuxture.y, sizeLoadingTuxture.x, sizeLoadingTuxture.y), emptyProgressBar);
-				GUI.DrawTexture(new Rect(positionLoadingTuxture.x, positionLoadingTuxture.y, sizeLoadingTuxture.x * async.progress, sizeLoadingTuxture.y), fullProgressBar);
+				//GUI.DrawTexture(new Rect(positionLoadingTuxture.x, positionLoadingTuxture.y, sizeLoadingTuxture.x, sizeLoadingTuxture.y), emptyProgressBar);
+				//GUI.DrawTexture(new Rect(positionLoadingTuxture.x, positionLoadingTuxture.y, sizeLoadingTuxture.x * async.progress, sizeLoadingTuxture.y), fullProgressBar);
+				GUI.DrawTexture (new Rect (positionLoadingTuxture.x, positionLoadingTuxture.y, sizeLoadingTuxture.x, sizeLoadingTuxture.y), texture[frame]);
+
 			}
 		}
 

@@ -52,7 +52,7 @@ public class LoginGUI : MonoBehaviour {
 	private string password = "";
 	private string year_of_birth = "";
 	private string country = "";
-	private OldDBManager dbManager;
+	private DBManager dbManager;
 	
 	private bool showErrorMsg = false;
 	private string errorMsg = "";
@@ -62,13 +62,74 @@ public class LoginGUI : MonoBehaviour {
 	private float delayWaitMsg = 1.0f;
 	private float timeErrorMsg;
 	private float delayErrorMsg = 5.0f;
+
+	//
+
+	[Range(1,10)]
+	public int animationSpeed;
+	public bool showAllCircles;
+
+	private int frame;
+	private int counter;
+	private const int FrameMax = 16;
+
+	private Texture2D[] texture;
+
+	//
+
 	// Use this for initialization
 	void Start () {
 	
 		loginState = LoginState.Login;
 		title = "Log In";
 
-		dbManager = GameObject.FindWithTag (GameRepository.GetDBManagerTag()).GetComponent<OldDBManager>();
+		dbManager = GameObject.FindWithTag (GameRepository.GetDBManagerTag()).GetComponent<DBManager>();
+
+		//
+
+		frame = 0;
+		counter = 0;
+
+		texture = new Texture2D[FrameMax];
+
+		if (showAllCircles) {
+			texture[0] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img1");
+			texture[1] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img2");
+			texture[2] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img3");
+			texture[3] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img4");
+			texture[4] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img5");
+			texture[5] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img6");
+			texture[6] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img7");
+			texture[7] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img8");
+			texture[8] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img9");
+			texture[9] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img10");
+			texture[10] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img11");
+			texture[11] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img12");
+			texture[12] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img13");
+			texture[13] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img14");
+			texture[14] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img15");
+			texture[15] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img16");
+		}
+		else {
+			texture[0] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img1b");
+			texture[1] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img2b");
+			texture[2] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img3b");
+			texture[3] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img4b");
+			texture[4] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img5b");
+			texture[5] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img6b");
+			texture[6] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img7b");
+			texture[7] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img8b");
+			texture[8] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img9b");
+			texture[9] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img10b");
+			texture[10] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img11b");
+			texture[11] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img12b");
+			texture[12] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img13b");
+			texture[13] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img14b");
+			texture[14] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img15b");
+			texture[15] = (Texture2D)Resources.Load("ProcessIndicator5/Image/img16b");
+		}
+
+		//
 
 		Time.timeScale = 1;
 	}
@@ -98,6 +159,17 @@ public class LoginGUI : MonoBehaviour {
 				showErrorMsg = false;
 			} else {
 				timeErrorMsg += Time.deltaTime;
+			}
+		}
+
+		if (loginState == LoginState.LoadScene) {
+			counter++;
+			if (counter >= animationSpeed) {
+				counter = 0;
+				frame++;
+				if (frame == FrameMax) {
+					frame = 0;
+				}
 			}
 		}
 	}
@@ -245,10 +317,11 @@ public class LoginGUI : MonoBehaviour {
 			positionLoadingTuxture.x = (Screen.width / 2) - (sizeLoadingTuxture.x / 2);
 			positionLoadingTuxture.y = (Screen.height / 2) - (sizeLoadingTuxture.y / 2);
 			
-			if (async != null) {
-				GUI.DrawTexture (new Rect (positionLoadingTuxture.x, positionLoadingTuxture.y, sizeLoadingTuxture.x, sizeLoadingTuxture.y), emptyProgressBar);
-				GUI.DrawTexture (new Rect (positionLoadingTuxture.x, positionLoadingTuxture.y, sizeLoadingTuxture.x * async.progress, sizeLoadingTuxture.y), fullProgressBar);
-			}
+			//if (async != null) {
+				//GUI.DrawTexture (new Rect (positionLoadingTuxture.x, positionLoadingTuxture.y, sizeLoadingTuxture.x, sizeLoadingTuxture.y), emptyProgressBar);
+				//GUI.DrawTexture (new Rect (positionLoadingTuxture.x, positionLoadingTuxture.y, sizeLoadingTuxture.x * async.progress, sizeLoadingTuxture.y), fullProgressBar);
+				GUI.DrawTexture (new Rect (positionLoadingTuxture.x, positionLoadingTuxture.y, sizeLoadingTuxture.x, sizeLoadingTuxture.y), texture[frame]);
+			//}
 		}
 		else if (loginState==LoginState.Exit){
 			Application.Quit();

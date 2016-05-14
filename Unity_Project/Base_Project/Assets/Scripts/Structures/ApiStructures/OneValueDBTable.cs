@@ -8,7 +8,6 @@ using System;
 //		   FindCurrentSection - lastQuestion
 //		   FindCurrentSection - nextQuestion
 //		   FindGameRound
-//		   GetSuccessRateForSection
 //		   GetSectionSerialNumber
 //		   GetLastSectionSerialNumber
 //		   GetFirtsQuestionIdFromNextSection

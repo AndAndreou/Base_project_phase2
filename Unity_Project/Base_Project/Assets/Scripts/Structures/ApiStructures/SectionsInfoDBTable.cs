@@ -8,7 +8,7 @@ using System;
 [Serializable]
 public class SectionsInfoDBTable
 {
-	public int section_number;
+	public string serial_number;
 	public string title;
 	public string description;
 }

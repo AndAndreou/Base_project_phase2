@@ -45,7 +45,7 @@ public class DBManager : MonoBehaviour {
 	private AnswersDBTable[] answersDBTable;
 	private string answersApiMsg="";
 
-	private OneValueDBTable[] successRateForSectionDBTable;
+	private OneFloatValueDBTable[] successRateForSectionDBTable;
 	private string successRateForSectionApiMsg="";
 
 	private OneValueDBTable[] sectionSerialNoDBTable;
@@ -132,7 +132,7 @@ public class DBManager : MonoBehaviour {
 		}
 		else
 		{
-			Debug.Log("--is null--");
+			Debug.Log("--is null--PostApiSend_Query");
 			Debug.Log(www.error);
 		}
 
@@ -189,7 +189,7 @@ public class DBManager : MonoBehaviour {
 				dbTable[i] = JsonUtility.FromJson<UsersDBTable>(rows[i]) ;
 				checkLoginApiMsg = "ok";
 				Debug.Log("CheckLogin ok");
-				checkLoginApiDBTable = new UsersDBTable[dbTable.Length];
+				checkLoginApiDBTable = new UsersDBTable[dbTable.Length]; //se ola afta ta dio na vgoun ektos tou for
 				checkLoginApiDBTable = dbTable;
 			}
 
@@ -197,7 +197,7 @@ public class DBManager : MonoBehaviour {
 		else
 		{
 			checkLoginApiMsg = www.error;
-			Debug.Log("--is null--");
+			Debug.Log("--is null--CheckLogin");
 			Debug.Log(www.error);
 		}
 
@@ -223,6 +223,8 @@ public class DBManager : MonoBehaviour {
 			DBInfo.SetUsername(playerUserName);
 			DBInfo.SetPassword(playerPassword);
 			DBInfo.SetID(playerUserID);
+
+			Debug.Log("PlayerUserID : " + DBInfo.GetID());
 
 			//find game round
 			int gameRound = FindGameRound(playerUserID);
@@ -291,7 +293,7 @@ public class DBManager : MonoBehaviour {
 			for(int i=0; i < rows.Length; i++) {
 				dbTable[i] = JsonUtility.FromJson<OneValueDBTable>(rows[i]) ;
 				currentSectionApiMsg = "ok";
-				Debug.Log("CheckLogin ok");
+				Debug.Log("GetApiCurrentSection ok");
 				currentSectionDBTable = new OneValueDBTable[dbTable.Length];
 				currentSectionDBTable =  dbTable;
 			}
@@ -300,7 +302,7 @@ public class DBManager : MonoBehaviour {
 		else
 		{
 			currentSectionApiMsg = www.error;
-			Debug.Log("--is null--");
+			Debug.Log("--is null--GetApiCurrentSection");
 			Debug.Log(www.error);
 		}
 			
@@ -340,7 +342,7 @@ public class DBManager : MonoBehaviour {
 			for(int i=0; i < rows.Length; i++) {
 				dbTable[i] = JsonUtility.FromJson<OneValueDBTable>(rows[i]) ;
 				lastQuestionApiMsg = "ok";
-				Debug.Log("CheckLogin ok");
+				Debug.Log("GetApiLastQuestion ok");
 				lastQuestionDBTable = new OneValueDBTable[dbTable.Length];
 				lastQuestionDBTable = dbTable ;
 			}
@@ -349,7 +351,7 @@ public class DBManager : MonoBehaviour {
 		else
 		{
 			lastQuestionApiMsg = www.error;
-			Debug.Log("--is null--");
+			Debug.Log("--is null--GetApiLastQuestion");
 			Debug.Log(www.error);
 		}
 			
@@ -387,9 +389,11 @@ public class DBManager : MonoBehaviour {
 
 			dbTable = new OneValueDBTable[rows.Length];
 			for(int i=0; i < rows.Length; i++) {
+				//Debug.Log ("++++++" + (JsonUtility.FromJson<OneValueDBTable>(rows[i])).temp);
 				dbTable[i] = JsonUtility.FromJson<OneValueDBTable>(rows[i]) ;
+				//Debug.Log (">>>>>>" + dbTable[i].temp);
 				nextQuestionApiMsg = "ok";
-				Debug.Log("CheckLogin ok");
+				Debug.Log("GetApiNextQuestion ok");
 				nextQuestionDBTable = new OneValueDBTable[dbTable.Length];
 				nextQuestionDBTable = dbTable ;
 			}
@@ -398,7 +402,7 @@ public class DBManager : MonoBehaviour {
 		else
 		{
 			nextQuestionApiMsg = www.error;
-			Debug.Log("--is null--");
+			Debug.Log("--is null--GetApiNextQuestion");
 			Debug.Log(www.error);
 		}
 			
@@ -471,11 +475,12 @@ public class DBManager : MonoBehaviour {
 			StartCoroutine("GetApiNextQuestion", www3);
 
 			if (nextQuestionApiMsg == "ok") {
-				if (nextQuestionDBTable[0].temp != null) {
+				if (nextQuestionDBTable[0].temp != 0) {
 					nextQuestion = nextQuestionDBTable[0].temp;
+					//Debug.Log ("-->nextQuestion : " + nextQuestion);
 				}
 				else {
-					nextQuestion = -1;
+					nextQuestion = 0;
 				}
 
 			} 
@@ -489,10 +494,10 @@ public class DBManager : MonoBehaviour {
 
 			Debug.Log ("nextQuestion : " + nextQuestion);
 
-			if(nextQuestion == -1){
+			if(nextQuestion == 0){
+				DBInfo.SetCurrentQuestion(GetFirstQuestionIdFromNextSection(DBInfo.GetCurrentSection()));
 				DBInfo.SetCurrentSection(DBInfo.GetCurrentSection()+1); //kanonika prepi na vrisko  pio ine to epomeno section
 				//DBInfo.SetCurrentQuestion(-1); //kanonika prepi na vrisko pia ine i proti erotisi tou section
-				DBInfo.SetCurrentQuestion(GetFirstQuestionIdFromNextSection(DBInfo.GetCurrentSection()));
 			}
 			else{
 				DBInfo.SetCurrentQuestion(nextQuestion);
@@ -506,8 +511,8 @@ public class DBManager : MonoBehaviour {
 			}
 		}
 
-		Debug.Log ("last - currentSection : " + DBInfo.GetCurrentSection());
-		Debug.Log ("last - currentquestion : " + DBInfo.GetCurrentQuestion());
+		Debug.Log ("after processing - currentSection : " + DBInfo.GetCurrentSection());
+		Debug.Log ("after processing - currentquestion : " + DBInfo.GetCurrentQuestion());
 
 		return 0;
 
@@ -546,7 +551,7 @@ public class DBManager : MonoBehaviour {
 			for(int i=0; i < rows.Length; i++) {
 				dbTable[i] = JsonUtility.FromJson<OneValueDBTable>(rows[i]) ;
 				gameRoundApiMsg = "ok";
-				Debug.Log("CheckLogin ok");
+				Debug.Log("GetApiGameRound ok");
 				gameRoundDBTable = new OneValueDBTable[dbTable.Length];
 				gameRoundDBTable = dbTable ;
 			}
@@ -555,7 +560,7 @@ public class DBManager : MonoBehaviour {
 		else
 		{
 			gameRoundApiMsg = www.error;
-			Debug.Log("--is null--");
+			Debug.Log("--is null--GetApiGameRound");
 			Debug.Log(www.error);
 		}
 
@@ -671,7 +676,7 @@ public class DBManager : MonoBehaviour {
 			for(int i=0; i < rows.Length; i++) {
 				dbTable[i] = JsonUtility.FromJson<QuestionsDBTable>(rows[i]) ;
 				questionsApiMsg = "ok";
-				Debug.Log("CheckLogin ok");
+				Debug.Log("GetApiQuestionsFromSection ok");
 				questionsDBTable = new QuestionsDBTable[dbTable.Length];
 				questionsDBTable = dbTable ;
 			}
@@ -680,7 +685,7 @@ public class DBManager : MonoBehaviour {
 		else
 		{
 			questionsApiMsg = www.error;
-			Debug.Log("--is null--");
+			Debug.Log("--is null--GetApiQuestionsFromSection");
 			Debug.Log(www.error);
 		}
 
@@ -719,7 +724,7 @@ public class DBManager : MonoBehaviour {
 			for(int i=0; i < rows.Length; i++) {
 				dbTable[i] = JsonUtility.FromJson<AnswersDBTable>(rows[i]) ;
 				answersApiMsg = "ok";
-				Debug.Log("CheckLogin ok");
+				Debug.Log("GetApiAnswersFromQuestion ok");
 				answersDBTable = new AnswersDBTable[dbTable.Length];
 				answersDBTable = dbTable ;
 			}
@@ -728,7 +733,7 @@ public class DBManager : MonoBehaviour {
 		else
 		{
 			answersApiMsg = www.error;
-			Debug.Log("--is null--");
+			Debug.Log("--is null--GetApiAnswersFromQuestion");
 			Debug.Log(www.error);
 		}
 
@@ -784,7 +789,8 @@ public class DBManager : MonoBehaviour {
 	
 	/*---------------------------------------------------------------------------------------------------------------*/
 
-	public void AddUserAnswers(List<TwoInt> userAnswers){
+	public string AddUserAnswers(List<TwoInt> userAnswers){
+		string msg = "--Error--AddUserAnswers-Empty arg";
 		for (int i=0; i<userAnswers.Count; i++) {
 			//Debug.Log(DBInfo.GetID());
 			string query = "INSERT INTO game_round_answers (game_round_game_round_id, questions_question_id, answers_answer_id) VALUES('" + DBInfo.GetGameRoundId() + "', '" + userAnswers[i].questionNo + "', '" + userAnswers[i].answerNo + "')";
@@ -793,14 +799,16 @@ public class DBManager : MonoBehaviour {
 				//Debug.Log(":::::::::::::::::::::::::::::::::::::");
 				Insert(query);
 				//StartCoroutine (Insert(query));
+				msg = "AddUserAnswers ok";
 			}
 			catch (MySqlException ex)
 			{
 				Debug.Log("Error Insert");
 				this.CloseConnection();
-				
+				msg = "--Error--AddUserAnswers-MySqlException";
 			}
 		}
+		return msg;
 
 	}
 	
@@ -813,7 +821,7 @@ public class DBManager : MonoBehaviour {
 		//yield return www;
 		while(!www.isDone){}
 
-		OneValueDBTable[] dbTable;
+		OneFloatValueDBTable[] dbTable;
 		if (www.error != "Null")
 		{
 			//string serviceData = www.text;
@@ -833,12 +841,12 @@ public class DBManager : MonoBehaviour {
 				rows[i] = "{" + rows[i] + "}";
 			}
 
-			dbTable = new OneValueDBTable[rows.Length];
+			dbTable = new OneFloatValueDBTable[rows.Length];
 			for(int i=0; i < rows.Length; i++) {
-				dbTable[i] = JsonUtility.FromJson<OneValueDBTable>(rows[i]) ;
+				dbTable[i] = JsonUtility.FromJson<OneFloatValueDBTable>(rows[i]) ;
 				successRateForSectionApiMsg = "ok";
-				Debug.Log("CheckLogin ok");
-				successRateForSectionDBTable = new OneValueDBTable[dbTable.Length];
+				Debug.Log("GetApiSuccessRateForSection ok");
+				successRateForSectionDBTable = new OneFloatValueDBTable[dbTable.Length];
 				successRateForSectionDBTable = dbTable ;
 			}
 
@@ -846,7 +854,7 @@ public class DBManager : MonoBehaviour {
 		else
 		{
 			successRateForSectionApiMsg = www.error;
-			Debug.Log("--is null--");
+			Debug.Log("--is null--GetApiSuccessRateForSection");
 			Debug.Log(www.error);
 		}
 
@@ -910,7 +918,7 @@ public class DBManager : MonoBehaviour {
 			for(int i=0; i < rows.Length; i++) {
 				dbTable[i] = JsonUtility.FromJson<OneValueDBTable>(rows[i]) ;
 				sectionSerialNoApiMsg = "ok";
-				Debug.Log("CheckLogin ok");
+				Debug.Log("GetApiSectionSerialNumber ok");
 				sectionSerialNoDBTable = new OneValueDBTable[dbTable.Length];
 				sectionSerialNoDBTable = dbTable ;
 			}
@@ -919,7 +927,7 @@ public class DBManager : MonoBehaviour {
 		else
 		{
 			sectionSerialNoApiMsg = www.error;
-			Debug.Log("--is null--");
+			Debug.Log("--is null--GetApiSectionSerialNumber");
 			Debug.Log(www.error);
 		}
 
@@ -984,7 +992,7 @@ public class DBManager : MonoBehaviour {
 			for(int i=0; i < rows.Length; i++) {
 				dbTable[i] = JsonUtility.FromJson<OneValueDBTable>(rows[i]) ;
 				lastSectionSerialNoApiMsg = "ok";
-				Debug.Log("CheckLogin ok");
+				Debug.Log("GetApiLastSectionSerialNumber ok");
 				lastSectionSerialNoDBTable = new OneValueDBTable[dbTable.Length];
 				lastSectionSerialNoDBTable  = dbTable ;
 			}
@@ -993,7 +1001,7 @@ public class DBManager : MonoBehaviour {
 		else
 		{
 			lastSectionSerialNoApiMsg = www.error;
-			Debug.Log("--is null--");
+			Debug.Log("--is null--GetApiLastSectionSerialNumber");
 			Debug.Log(www.error);
 		}
 
@@ -1056,7 +1064,7 @@ public class DBManager : MonoBehaviour {
 			for(int i=0; i < rows.Length; i++) {
 				dbTable[i] = JsonUtility.FromJson<OneValueDBTable>(rows[i]) ;
 				firtsQuestionIdNextLevelApiMsg = "ok";
-				Debug.Log("CheckLogin ok");
+				Debug.Log("GetApiFirstQuestionIdFromNextSection ok");
 				firtsQuestionIdNextLevelDBTable = new OneValueDBTable[dbTable.Length];
 				firtsQuestionIdNextLevelDBTable  = dbTable ;
 			}
@@ -1065,7 +1073,7 @@ public class DBManager : MonoBehaviour {
 		else
 		{
 			firtsQuestionIdNextLevelApiMsg = www.error;
-			Debug.Log("--is null--");
+			Debug.Log("--is null--GetApiFirstQuestionIdFromNextSection");
 			Debug.Log(www.error);
 		}
 
@@ -1128,7 +1136,7 @@ public class DBManager : MonoBehaviour {
 			for(int i=0; i < rows.Length; i++) {
 				dbTable[i] = JsonUtility.FromJson<PlayerRankDBTable>(rows[i]) ;
 				playerRankApiMsg = "ok";
-				Debug.Log("CheckLogin ok");
+				Debug.Log("GetApiGetRank ok");
 				playerRankDBTable = new PlayerRankDBTable[dbTable.Length];
 				playerRankDBTable  = dbTable ;
 			}
@@ -1137,7 +1145,7 @@ public class DBManager : MonoBehaviour {
 		else
 		{
 			playerRankApiMsg = www.error;
-			Debug.Log("--is null--");
+			Debug.Log("--is null--GetApiGetRank");
 			Debug.Log(www.error);
 		}
 
@@ -1218,17 +1226,18 @@ public class DBManager : MonoBehaviour {
 			dbTable = new SectionsInfoDBTable[rows.Length];
 			for(int i=0; i < rows.Length; i++) {
 				dbTable[i] = JsonUtility.FromJson<SectionsInfoDBTable>(rows[i]) ;
-				allSectionsInfoApiMsg = "ok";
-				Debug.Log("CheckLogin ok");
-				allSectionsInfoDBTable = new SectionsInfoDBTable[dbTable.Length];
-				allSectionsInfoDBTable  = dbTable ;
+
 			}
+			allSectionsInfoDBTable = new SectionsInfoDBTable[dbTable.Length];
+			allSectionsInfoDBTable  = dbTable ;
+			allSectionsInfoApiMsg = "ok";
+			Debug.Log("GetApiAllSectionsInfo ok");
 
 		}
 		else
 		{
 			allSectionsInfoApiMsg = www.error;
-			Debug.Log("--is null--");
+			Debug.Log("--is null--GetApiAllSectionsInfo");
 			Debug.Log(www.error);
 		}
 
@@ -1247,12 +1256,15 @@ public class DBManager : MonoBehaviour {
 
 		if (allSectionsInfoApiMsg == "ok") {
 			for (int i = 0; i < allSectionsInfoDBTable.Length; i++) {
-				SectionInfoStruct sectionInfoStruct = new SectionInfoStruct (allSectionsInfoDBTable [i].section_number, allSectionsInfoDBTable [i].title, "");
-				if (allSectionsInfoDBTable [i].description != null) {
-					sectionInfoStruct.description = allSectionsInfoDBTable [i].description;
-				}
+				if (allSectionsInfoDBTable [i].serial_number != "") {
+					Debug.Log(allSectionsInfoDBTable [i].serial_number + " | " + allSectionsInfoDBTable [i].title);
+					SectionInfoStruct sectionInfoStruct = new SectionInfoStruct (int.Parse(allSectionsInfoDBTable [i].serial_number), allSectionsInfoDBTable [i].title, "");
+					if (allSectionsInfoDBTable [i].description != null) {
+						sectionInfoStruct.description = allSectionsInfoDBTable [i].description;
+					}
 
-				sectionsInfo.Add (sectionInfoStruct);
+					sectionsInfo.Add (sectionInfoStruct);
+				}
 			}
 		} else if (allSectionsInfoApiMsg == "{\"error\":{\"text\":No records found.}}") {
 			

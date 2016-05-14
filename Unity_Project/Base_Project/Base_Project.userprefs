@@ -1,11 +1,14 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AI_Characters\RandomBehavior.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\DBManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\AI_Characters\RandomBehavior.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\OldDBManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\DBManager.cs" Line="808" Column="10" />
+      <File FileName="Assets\Scripts\GameManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\GUIManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AI_Characters\Do_Question.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\DBInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Structures\SectionInfoStruct.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\LoginGUI.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\AI_Characters\Do_Question.cs" Line="506" Column="47" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

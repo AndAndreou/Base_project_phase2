@@ -47,6 +47,8 @@
   <ItemGroup>
      <Compile Include="Assets\OfficeMegaKit\Office Tile Kit\Scripts\SimpleDoorTrigger.cs" />
      <Compile Include="Assets\OfficeMegaKit\OfficeBathroomKit\MirrorAsset\MirrorReflection.cs" />
+     <Compile Include="Assets\Resources\ProcessIndicator5\Script\ProcessIndicator5.cs" />
+     <Compile Include="Assets\Resources\ProcessIndicator5\Script\test5.cs" />
      <Compile Include="Assets\Scripts\AI_Characters\Do_Question.cs" />
      <Compile Include="Assets\Scripts\AI_Characters\RandomBehavior.cs" />
      <Compile Include="Assets\Scripts\AI_Characters\SpawnController.cs" />
@@ -63,13 +65,14 @@
      <Compile Include="Assets\Scripts\LoginGUI.cs" />
      <Compile Include="Assets\Scripts\MainMenuManager.cs" />
      <Compile Include="Assets\Scripts\Minimap\MinimapCameraMovement.cs" />
-     <Compile Include="Assets\Scripts\OldDBManager.cs" />
+     <Compile Include="Assets\Scripts\OldDBManager2.cs" />
      <Compile Include="Assets\Scripts\PauseGUI.cs" />
      <Compile Include="Assets\Scripts\SoundManager.cs" />
      <Compile Include="Assets\Scripts\Structures\AStruct.cs" />
      <Compile Include="Assets\Scripts\Structures\ApiStructures\AnswersDBTable.cs" />
      <Compile Include="Assets\Scripts\Structures\ApiStructures\GetJsonDataScript.cs" />
      <Compile Include="Assets\Scripts\Structures\ApiStructures\MyClass.cs" />
+     <Compile Include="Assets\Scripts\Structures\ApiStructures\OneFloatValueDBTable.cs" />
      <Compile Include="Assets\Scripts\Structures\ApiStructures\OneValueDBTable.cs" />
      <Compile Include="Assets\Scripts\Structures\ApiStructures\PlayerRankDBTable.cs" />
      <Compile Include="Assets\Scripts\Structures\ApiStructures\QuestionsDBTable.cs" />
