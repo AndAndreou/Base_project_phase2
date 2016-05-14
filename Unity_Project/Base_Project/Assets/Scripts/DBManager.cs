@@ -62,6 +62,8 @@ public class DBManager : MonoBehaviour {
 
 	private SectionsInfoDBTable[] allSectionsInfoDBTable;
 	private string allSectionsInfoApiMsg="";
+
+	private string insertMsg="";
 	//
 
 	// Use this for initialization
@@ -128,12 +130,14 @@ public class DBManager : MonoBehaviour {
 			//MyClass serviceData = JsonUtility.FromJson<MyClass>(www.text) ;
 			//Data is in json format, we need to parse the Json.
 			Debug.Log("insert ok");
+			insertMsg = "insert ok";
 
 		}
 		else
 		{
 			Debug.Log("--is null--PostApiSend_Query");
 			Debug.Log(www.error);
+			insertMsg = ("insert error : " + www.error);
 		}
 
 		yield return www;
@@ -145,7 +149,7 @@ public class DBManager : MonoBehaviour {
 	//Insert statement
 	public void Insert(string query)
 	{
-
+		insertMsg = "";
 		string Url = hostLink +"/slim/index.php/Send_Query";
 
 		WWWForm form = new WWWForm ();
@@ -228,15 +232,17 @@ public class DBManager : MonoBehaviour {
 
 			//find game round
 			int gameRound = FindGameRound(playerUserID);
-			Debug.Log("gameRound : " + gameRound);
 
-			if ( gameRound >=0){
+
+			if ( gameRound >0){
 				DBInfo.SetGameRoundId(gameRound);
 			}
 			else{
 				//set new game rount
 				SetGameRound(playerUserID);
 			}
+
+			Debug.Log("gameRound : " + DBInfo.GetGameRoundId());
 
 			//find current section
 			FindCurrentSection(gameRound);
@@ -631,6 +637,10 @@ public class DBManager : MonoBehaviour {
 			Insert (query);
 
 			this.CloseConnection();
+
+			if (insertMsg != "insert ok"){
+				return insertMsg;
+			}
 
 			CheckLogin(username,pass);
 
