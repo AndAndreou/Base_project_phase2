@@ -160,18 +160,42 @@ public class MainMenuManager : MonoBehaviour {
 			Rect groupButtonRect = new Rect (groupButtonPosition, groupButtonSize);
 				
 			GUI.BeginGroup (groupButtonRect);
-			if (GUILayout.Button ("New Game")) {
+			if (GUILayout.Button ("Play Game")) {
 				mainMenuState = MainMenuState.NewGame;
 				PlayButtonSfx ();
 			}
-				
+			 
+            /*	
 			if (GUILayout.Button ("Load Game")) {
 				mainMenuState = MainMenuState.LoadGame;
 				PlayButtonSfx ();
 			}
+            */
 
-			//for controls and settings button
-			/*	
+            //new set languege
+            string langugeInTxt = "";
+            if (DBInfo.GetInEnglish() == true)
+            {
+                langugeInTxt = "English";
+            }
+            else
+            {
+                langugeInTxt = "Greek";
+            }
+            if (GUILayout.Button("Language : " + langugeInTxt))
+            {
+                DBInfo.SetInEnglish(!DBInfo.GetInEnglish());
+                if (DBInfo.GetInEnglish() == true)
+                {
+                    langugeInTxt = "English";
+                }
+                else
+                {
+                    langugeInTxt = "Greek";
+                }
+            }
+            //for controls and settings button
+            /*	
 			if (GUILayout.Button ("Controls")) {
 				mainMenuState = MainMenuState.Controls;
 				PlayButtonSfx ();
@@ -183,7 +207,7 @@ public class MainMenuManager : MonoBehaviour {
 			}
 			*/
 
-			if (GUILayout.Button ("Exit")) {
+            if (GUILayout.Button ("Exit")) {
 				mainMenuState = MainMenuState.Exit;
 				PlayButtonSfx ();
 			}

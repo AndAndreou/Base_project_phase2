@@ -33,8 +33,14 @@ public class Do_Question : MonoBehaviour {
 	public string interactText = "Press F To Talk";
 	public GUIStyle InteractTextStyle;
 
-	public string extraText = "" ;
-	public string sectionSerialNumberText = "" ;
+    //new
+    public string extraTextGreek = "";
+    public string extraTextEnglish = "";
+    public string sectionSerialNumberGreekText = "Θα πρέπει να συμπληρώσετε τις προηγούμενες ενότητες, προκειμένου να ξεκινήσει αυτή την ενότητα";
+    public string sectionSerialNumberEnglishText = "You have to complete the previous sections in order to start this section";
+
+    private string extraText = "" ;
+	private string sectionSerialNumberText = "" ;
 
 	//section no for take questions from db
 	public int sectionNo;
@@ -141,7 +147,18 @@ public class Do_Question : MonoBehaviour {
 		lastUpdateQuestion = currentQuestion;
 		noUpdateQuestionCount = 0;
 
-		init = true;
+        //new
+        if (DBInfo.GetInEnglish() == true) {
+            extraText = extraTextEnglish;
+            sectionSerialNumberText = sectionSerialNumberEnglishText;
+        }
+        else
+        {
+            extraText = extraTextGreek;
+            sectionSerialNumberText = sectionSerialNumberGreekText;
+        }
+
+    init = true;
 
 	}
 

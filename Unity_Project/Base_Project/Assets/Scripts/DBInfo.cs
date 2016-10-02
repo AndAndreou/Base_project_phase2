@@ -15,6 +15,7 @@ public class DBInfo : MonoBehaviour {
 	private int lastSection;
 	private List<SectionInfoStruct> sectionsInfo;
 	private Vector3 playerFirstPositionForMainScene ;
+    private bool inEnglish = true;
 	//private int currentLevel=1;
 	
 	// Explicit static constructor to tell C# compiler
@@ -140,7 +141,7 @@ public class DBInfo : MonoBehaviour {
 	/*---------------------------------------------------------------------------------------------------------------*/
 	
 	public static Vector3 GetPlayerFirstPositionForMainScene() {
-		Debug.Log (instance.playerFirstPositionForMainScene);
+		//Debug.Log (instance.playerFirstPositionForMainScene);
 		return instance.playerFirstPositionForMainScene;
 	}
 	
@@ -148,7 +149,23 @@ public class DBInfo : MonoBehaviour {
 	
 	public static string SetPlayerFirstPositionForMainScene( Vector3 pos) {
 		instance.playerFirstPositionForMainScene = pos;
-		Debug.Log (instance.playerFirstPositionForMainScene);
+		//Debug.Log (instance.playerFirstPositionForMainScene);
 		return "";
 	}
+
+    /*---------------------------------------------------------------------------------------------------------------*/
+
+    public static bool GetInEnglish()
+    {
+        return instance.inEnglish;
+    }
+
+    /*---------------------------------------------------------------------------------------------------------------*/
+
+    public static string SetInEnglish(bool value)
+    {
+        instance.inEnglish = value;
+        //Debug.Log(instance.playerFirstPositionForMainScene);
+        return "";
+    }
 }
